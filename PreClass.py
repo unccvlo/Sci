@@ -26,5 +26,32 @@ df = pd.read_csv('/Users/sonveni/Documents/PREP/mushrooms.csv')
 # value as bruises and hue as class column
 # plt.show()  # show plot
 
-from sklearn.preprocessing import LabelEncoder
-enc = LabelEncoder()
+# from sklearn.preprocessing import LabelEncoder
+# enc = LabelEncoder()  # initialize label encoder as enc
+
+# for col in df.columns:  # label encode these columns to make them numerical
+    # df[col] = enc.fit(df[col]).transform(df[col])
+
+# print(df.dtypes)
+# Notice how they have all been transformed to integers now.
+# This may allow us to work with more visualizations that require integers.
+# However, remember that these are still categorical values.
+# A value of 5 is not necessarily "greater than" a value of "2"
+# (again, since they are still just different categories).
+
+
+# CORRELATION
+def cramers_v(x, y):
+    import scipy.stats as ss
+    confusion_matrix = pd.crosstab(x.y)
+    chi2 = ss.chi2_contingency(confusion_matrix)[0]
+    n = confusion_matrix.sum().sum()
+    phi2 = chi2/n
+    r, k = confusion_matrix.shape
+    phi2corr = max(0, phi2 - ((k-1)*(r-1))/(n-1))
+    rcorr = r - ((r-1)**2)/(n-1)
+    kcorr = k - ((k-1)**2/(n-1))
+    return np.sqrt(phi2corr/min((kcorr-1), (rcorr-1)))
+
+
+print(cramers_v(df['class'], df['class']))
