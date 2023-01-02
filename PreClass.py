@@ -39,19 +39,19 @@ df = pd.read_csv('/Users/sonveni/Documents/PREP/mushrooms.csv')
 # A value of 5 is not necessarily "greater than" a value of "2"
 # (again, since they are still just different categories).
 
+x = df.drop(['class'], axis = 1)  # use all columns except 'class'
+y = df['class']  # target value
 
-# CORRELATION
-def cramers_v(x, y):
-    import scipy.stats as ss
-    confusion_matrix = pd.crosstab(x.y)
-    chi2 = ss.chi2_contingency(confusion_matrix)[0]
-    n = confusion_matrix.sum().sum()
-    phi2 = chi2/n
-    r, k = confusion_matrix.shape
-    phi2corr = max(0, phi2 - ((k-1)*(r-1))/(n-1))
-    rcorr = r - ((r-1)**2)/(n-1)
-    kcorr = k - ((k-1)**2/(n-1))
-    return np.sqrt(phi2corr/min((kcorr-1), (rcorr-1)))
+# print(x.shape, y.shape)
+from sklearn.model_selection import train_test_split  # used to train and test dataset for modeling
+xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size=0.80)
+print(xtrain.shape, xtest.shape, ytrain.shape, ytest.shape)
 
+from sklearn.tree import DecisionTreeClassifier
+model = DecisionTreeClassifier
+print(model.fit(x, y))  # this trains the model
 
-print(cramers_v(df['class'], df['class']))
+from sklearn.metrics import accuracy_score
+y_predictions = model.predict(x)
+accuracy_score(y_predictions, y)
+
